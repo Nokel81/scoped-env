@@ -5,7 +5,6 @@ authors = ["Sebastian Malton <sebastian@malton.name>"]
 edition = "2018"
 license-file = "LICENSE"
 description = "A lifetime scoped env variable setting"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+readme = "README.md"
+repository = "https://github.com/Nokel81/scoped-env"
+keywords = ["env", "lifetime"]

@@ -6,3 +6,5 @@ edition = "2018"
 license-file = "LICENSE"
 description = "A lifetime scoped env variable setting"
 readme = "README.md"
+repository = "https://github.com/Nokel81/scoped-env"
+keywords = ["env", "lifetime"]

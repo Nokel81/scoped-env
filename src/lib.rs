@@ -31,6 +31,27 @@ where
         env::set_var(name.as_ref(), value);
         Self { name, old_value }
     }
+
+    /// Removes the environment variable {name} from the
+    /// environment of the currently running process.
+    /// The returned instance should be assigned to a `_name`
+    /// binding. The variable value will be restored when the
+    /// handle goes out of scope.
+    ///
+    /// ```rust
+    /// use scoped_env::ScopedEnv;
+    /// std::env::set_var("HELLO", "WORLD");
+    /// {
+    ///     let c = ScopedEnv::remove("HELLO");
+    ///     assert!(std::env::var(c).is_err());
+    /// }
+    /// assert_eq!(std::env::var("HELLO").unwrap().as_str(), "WORLD");
+    /// ```
+    pub fn remove(name: T) -> Self {
+        let old_value = env::var_os(name.as_ref());
+        env::remove_var(name.as_ref());
+        Self { name, old_value }
+    }
 }
 
 impl<T> AsRef<OsStr> for ScopedEnv<T>
@@ -48,9 +69,7 @@ where
 {
     fn drop(&mut self) {
         match self.old_value {
-            Some(ref old_value) => {
-                env::set_var(self.as_ref(), old_value)
-            }
+            Some(ref old_value) => env::set_var(self.as_ref(), old_value),
             None => env::remove_var(self),
         }
     }
@@ -86,5 +105,16 @@ mod tests {
         }
 
         assert_eq!(env::var("FOOBAR1").unwrap(), "OLD_VALUE");
+    }
+
+    #[test]
+    fn does_remove() {
+        env::set_var("FOOBAR", "SOME_VALUE");
+        {
+            let c = ScopedEnv::remove("FOOBAR");
+            assert_eq!(env::var_os(c), None);
+        }
+
+        assert_eq!(env::var_os("FOOBAR").unwrap(), "SOME_VALUE");
     }
 }

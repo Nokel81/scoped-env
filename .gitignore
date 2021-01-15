@@ -1,2 +1,6 @@
 /target
 Cargo.lock
+
+# IDE - Visual Studio Code
+*.code-workspace
+.vscode/

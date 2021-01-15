@@ -106,4 +106,15 @@ mod tests {
 
         assert_eq!(env::var("FOOBAR1").unwrap(), "OLD_VALUE");
     }
+
+    #[test]
+    fn does_remove() {
+        env::set_var("FOOBAR", "SOME_VALUE");
+        {
+            let c = ScopedEnv::remove("FOOBAR");
+            assert_eq!(env::var_os(c), None);
+        }
+
+        assert_eq!(env::var_os("FOOBAR").unwrap(), "SOME_VALUE");
+    }
 }

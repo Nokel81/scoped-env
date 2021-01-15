@@ -8,5 +8,5 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scoped-env = "1.0.0"
+scoped-env = "2.1.0"
 ```

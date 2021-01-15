@@ -48,9 +48,7 @@ where
 {
     fn drop(&mut self) {
         match self.old_value {
-            Some(ref old_value) => {
-                env::set_var(self.as_ref(), old_value)
-            }
+            Some(ref old_value) => env::set_var(self.as_ref(), old_value),
             None => env::remove_var(self),
         }
     }
